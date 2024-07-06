@@ -1,59 +1,76 @@
-//input expenses
-function input() {
-  const foodInput = document.getElementById("food-input");
-  const foodCost = parseFloat(foodInput.value);
+//expenses calculatiom
+function calcExpense() {
+  const foodExpenses = document.getElementById("food-input");
+  const foodExpAmount = parseFloat(foodExpenses.value);
+  const rentExpenses = document.getElementById("rent-input");
+  const rentExpAmount = parseFloat(rentExpenses.value);
+  const clothesExpenses = document.getElementById("cloths-input");
+  const clothExpAmount = parseFloat(clothesExpenses.value);
 
-  const rentInput = document.getElementById("rent-input");
-  const rentCost = parseFloat(rentInput.value);
+  if (foodExpAmount > 0 && rentExpAmount > 0 && clothExpAmount > 0) {
+    const totalExpenses = foodExpAmount + rentExpAmount + clothExpAmount;
 
-  const clotheInput = document.getElementById("cloths-input");
-  const clothCost = parseFloat(clotheInput.value);
-
-  //field clear
-  foodInput.value = "";
-  rentInput.value = "";
-  clotheInput.value = "";
-
-  return foodCost + rentCost + clothCost;
+    const expenseField = document.getElementById("total-expense");
+    expenseField.innerText = totalExpenses;
+    return totalExpenses;
+  } else {
+    alert("please input only positive number");
+  }
 }
-//balance
 
-function balance(inputAmount) {
+//update Balance
+function updateBalance() {
+  const totalExpenses = document.getElementById("total-expense");
+  const expense = parseFloat(totalExpenses.innerText);
   const incomeInput = document.getElementById("total-income");
   const totalIncome = parseFloat(incomeInput.value);
+
+  const balanceField = document.getElementById("balance");
+  if (totalIncome > 0 && expense < totalIncome) {
+    const updateBalance = totalIncome - expense;
+    balanceField.innerText = updateBalance;
+  } else {
+    document.getElementById("eror-text-expense").style.display = "block";
+  }
+}
+
+// saving amount
+function calcSaving() {
+  const incomeInput = document.getElementById("total-income");
+  const saveInput = document.getElementById("save-percent");
+  const totalIncome = parseFloat(incomeInput.value);
+  const savePercent = parseFloat(saveInput.value);
+
   const balance = document.getElementById("balance");
-  balance.innerText = totalIncome - inputAmount;
+  const currenBalance = parseFloat(balance.innerText);
 
-  //clear
-  incomeInput.value = "";
-}
-//total Expenses
-function totalExpense(inputAmount) {
-  const totalExpense = document.getElementById("total-expense");
-  totalExpense.innerText = inputAmount;
+  const totalSave = (totalIncome / 100) * savePercent;
+  if (totalSave < currenBalance) {
+    document.getElementById("saving-amount").innerText = totalSave;
+    document.getElementById("erorr-text").style.display = "none";
+
+    return totalSave;
+  } else {
+    document.getElementById("erorr-text").style.display = "block";
+  }
 }
 
-//calculate button event handler
+//update remaining Balance
+function calcRemBalance(saving) {
+  const currenBalance = document.getElementById("balance");
+  const balance = parseFloat(currenBalance.innerText);
+  const remBal = document.getElementById("remain-balance");
+  remBal.innerText = balance - saving;
+}
+
+// calculate event handler
 document.getElementById("calc-btn").addEventListener("click", function () {
-  const inputAmount = input();
-  totalExpense(inputAmount);
-  balance(inputAmount);
+  calcExpense();
+  updateBalance();
 });
 
-//save btn event handlar
+//save event handler
 document.getElementById("save-btn").addEventListener("click", function () {
-  const balance = document.getElementById("balance");
-  const balanceValue = parseFloat(balance.innerText);
-  const savePercent = document.getElementById("save-percent");
-  const savePercentNumber = parseFloat(savePercent.value);
-  const savingAmount = document.getElementById("saving-amount");
-  const savingAmountValue = (balanceValue / 100) * savePercentNumber;
-  savingAmount.innerText = savingAmountValue;
-
-  //remaining Balance
-  const remainingBalance = document.getElementById("remain-balance");
-  remainingBalance.innerText = balanceValue - savingAmountValue;
-
-  //clear
-  savePercent.value = "";
+  const savingAmount = calcSaving();
+  remBal = calcRemBalance(savingAmount);
 });

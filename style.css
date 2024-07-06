@@ -16,3 +16,9 @@
 #save-percent {
   width: 25%;
 }
+
+#erorr-text,
+#eror-text-expense {
+  color: red;
+  display: none;
+}
