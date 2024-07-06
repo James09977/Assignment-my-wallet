@@ -1,0 +1,18 @@
+.heading {
+  color: aquamarine;
+  font-size: 36px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.calculation {
+  background-color: rgb(211, 248, 248);
+}
+
+.input-box {
+  background-color: #6ed7d79b;
+  border: none;
+  border-radius: 2px;
+}
+#save-percent {
+  width: 25%;
+}
